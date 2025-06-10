@@ -2,6 +2,7 @@ package model
 
 import (
 	"gorm.io/gorm"
+	"time"
 )
 
 type FavoriteBookRepo struct {
@@ -74,6 +75,7 @@ type BookFavoriteInfo struct {
 	TagId       int    `json:"tagId"`
 	Page        int    `json:"page"`
 	LastRead    int64  `json:"lastRead"`
+	ReadingCost int    `json:"readingCost"`
 }
 
 func (r *FavoriteBookRepo) GetFavoriteBookList(userId int, page int, pageSize int) ([]BookFavoriteInfo, error) {
@@ -87,7 +89,8 @@ func (r *FavoriteBookRepo) GetFavoriteBookList(userId int, page int, pageSize in
 						big_cover_pic, 
 						COALESCE(tag_id, -1) AS tag_id, 
 						favorite_book.page AS page,
-						favorite_book.last_read AS last_read
+						favorite_book.last_read AS last_read,
+						reading_cost
 		`).
 		Joins(" JOIN book ON book.id = favorite_book.book_id ").
 		Joins(" LEFT JOIN book_tag_rel ON book.id = book_tag_rel.book_id ").
@@ -116,4 +119,14 @@ func (r *FavoriteBookRepo) CheckFavoriteBook(userId int, bookIds []int) (map[int
 		resMap[id] = nil
 	}
 	return resMap, nil
+}
+
+// AddBookReadingTime 增加书籍阅读时间
+func (r *FavoriteBookRepo) AddBookReadingTime(userId int, bookId int, readingTime int) error {
+	return r.db.Model(&FavoriteBook{}).
+		Where("book_id = ? AND user_id = ?", bookId, userId).
+		UpdateColumns(map[string]any{
+			"reading_cost": gorm.Expr("reading_cost + ?", readingTime),
+			"update_time":  time.Now().Unix(),
+		}).Error
 }

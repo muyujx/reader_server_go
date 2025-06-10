@@ -1,7 +1,3 @@
-
-
-
-
 #### 添加收藏书籍
 POST localhost:8080/favorite/add
 Content-Type: application/json
@@ -32,6 +28,13 @@ Content-Type: application/json
   "pageSize": 20
 }
 
+### 增加阅读耗时
+POST localhost:8080/favorite/read_cost
+Content-Type: application/json
 
+{
+  "bookId": 13,
+  "readingCost": 10
+}
 
 

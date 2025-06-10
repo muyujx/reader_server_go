@@ -29,6 +29,7 @@ version.lock
 conf/conf.ini
 .vscode/
 
+test
 dist
 config.yml
 *.log

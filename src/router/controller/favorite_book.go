@@ -2,12 +2,14 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"muyu.com/reader_server_go/v1/src/logger"
 	"muyu.com/reader_server_go/v1/src/serializer"
 	"muyu.com/reader_server_go/v1/src/service"
 	"net/http"
 	"strconv"
 )
 
+// AddFavoriteBook 添加收藏书籍
 func AddFavoriteBook(c *gin.Context) {
 	svc := &service.AddFavoriteBookSvc{}
 
@@ -18,6 +20,7 @@ func AddFavoriteBook(c *gin.Context) {
 	}
 }
 
+// DeleteFavoriteBook 删除收藏书籍
 func DeleteFavoriteBook(c *gin.Context) {
 	svc := &service.DeleteFavoriteBookSvc{}
 
@@ -28,6 +31,7 @@ func DeleteFavoriteBook(c *gin.Context) {
 	}
 }
 
+// ListFavoriteBook 获取收藏书籍列表
 func ListFavoriteBook(c *gin.Context) {
 	svc := &service.FavoriteListSvc{}
 	if err := c.ShouldBindJSON(svc); err == nil {
@@ -37,6 +41,7 @@ func ListFavoriteBook(c *gin.Context) {
 	}
 }
 
+// UpdateUserCurrentPage 修改当前阅读进度
 func UpdateUserCurrentPage(c *gin.Context) {
 	var svc service.UpdateUsrCurPageSvc
 
@@ -47,6 +52,7 @@ func UpdateUserCurrentPage(c *gin.Context) {
 	}
 }
 
+// GetUserCurrentPage 获取当前书籍的阅读进度
 func GetUserCurrentPage(c *gin.Context) {
 	bookId, err := strconv.Atoi(c.Query("bookId"))
 
@@ -56,4 +62,16 @@ func GetUserCurrentPage(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, service.GetUserCurPage(c, bookId))
+}
+
+// AddReadingCost 增加阅读耗时
+func AddReadingCost(c *gin.Context) {
+	svc := &service.AddReadingTimeSvc{}
+	if err := c.ShouldBindJSON(svc); err == nil {
+		serializer.ReturnJson(c, svc.AddReadingTime(c))
+		return
+	} else {
+		logger.Error("param error", err)
+		serializer.ParamErrMsg(err.Error())
+	}
 }

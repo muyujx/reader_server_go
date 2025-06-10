@@ -145,3 +145,25 @@ func (svc *FavoriteListSvc) GetFavoriteBookList(c *gin.Context) serializer.Respo
 	res.Content = content
 	return serializer.SuccessRes(res)
 }
+
+type AddReadingTimeSvc struct {
+	BookId      int `json:"bookId"`
+	ReadingCost int `json:"readingCost"`
+}
+
+// AddReadingTime 增加书籍阅读时间
+func (svc *AddReadingTimeSvc) AddReadingTime(c *gin.Context) serializer.Response {
+	user := ctx.GetUser(c)
+	bookId := svc.BookId
+	readingCost := svc.ReadingCost
+
+	if readingCost <= 0 {
+		return serializer.ParamErrMsg("readingCost must greater than 0")
+	}
+	err := model.DbOp.FavoriteBookRepo.AddBookReadingTime(user.ID, bookId, readingCost)
+	if err != nil {
+		logger.Error("[AddReadingTime] AddBookReadingTime err:", err)
+		return serializer.UnknownErr
+	}
+	return serializer.Success
+}

@@ -59,7 +59,7 @@ func (svc *BookListService) SearchBookList(c *gin.Context) serializer.Response {
 		return serializer.ErrRes(err)
 	}
 
-	bookIdList := make([]int, len(books))
+	bookIdList := make([]int, 0, len(books))
 	for _, book := range books {
 		bookIdList = append(bookIdList, book.ID)
 	}

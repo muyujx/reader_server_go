@@ -49,6 +49,7 @@ func InitRouter() *gin.Engine {
 	favoriteGp.POST("/add", controller.AddFavoriteBook)
 	favoriteGp.POST("/delete", controller.DeleteFavoriteBook)
 	favoriteGp.POST("/list", controller.ListFavoriteBook)
+	favoriteGp.POST("/read_cost", controller.AddReadingCost)
 
 	// test
 	testGp := r.Group("/test")
