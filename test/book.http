@@ -1,0 +1,20 @@
+
+
+###
+POST localhost:8080/book/info/search/book
+Content-Type: application/json
+
+{
+  "page": 1,
+  "pageSize": 18,
+  "search": ""
+}
+
+
+### getBookInfo
+GET localhost:8080/book/info/get/book/info?bookId=12
+
+
+### getBookContents
+GET localhost:8080/book/info/get/contents?bookId=12
+

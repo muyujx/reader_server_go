@@ -1,0 +1,13 @@
+
+###
+GET localhost:8080/user/page/get ?bookId=12
+
+
+###
+POST localhost:8080/user/page/update
+Content-Type: application/json
+
+{
+  "bookId": 12,
+  "page": 10
+}

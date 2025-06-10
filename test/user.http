@@ -1,0 +1,12 @@
+
+
+
+### 创建用户
+POST localhost:8080/register
+Content-Type: application/json
+
+{
+  "account": "test1111",
+  "password": "test1111"
+}
+
