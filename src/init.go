@@ -5,6 +5,7 @@ import (
 	"io"
 	"muyu.com/reader_server_go/v1/src/cache"
 	"muyu.com/reader_server_go/v1/src/config"
+	"muyu.com/reader_server_go/v1/src/es"
 	"muyu.com/reader_server_go/v1/src/model"
 	"os"
 )
@@ -38,4 +39,8 @@ func Init() {
 
 	// 初始化 redis
 	cache.InitRedis()
+
+	// 初始化 es
+	es.InitEs()
+
 }

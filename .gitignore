@@ -29,14 +29,15 @@ version.lock
 conf/conf.ini
 .vscode/
 
-test
 dist
 config.yml
 *.log
 *.tar
 config-dev.yml
-docker/
+
+/docker
 /deploy.ps1
-script
+/script
+/test/
 
 *.test.exe

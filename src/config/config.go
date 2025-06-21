@@ -14,6 +14,7 @@ type AppConfig struct {
 	Port     int
 	Redis    RedisConfig
 	LogLevel string
+	Es       EsConfig
 }
 
 type MysqlConfig struct {
@@ -31,6 +32,12 @@ type RedisConfig struct {
 	Host     string
 	Port     int
 	PoolSize int
+}
+
+type EsConfig struct {
+	Host     string
+	Username string
+	Password string
 }
 
 var Config AppConfig

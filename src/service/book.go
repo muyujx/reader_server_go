@@ -156,13 +156,13 @@ type ContentsRes struct {
 	Level     int    `json:"level"`
 }
 
-func GetContents(bookIdStr string) serializer.Response {
+func GetContents(bookIdStr string, c *gin.Context) serializer.Response {
 	bookId, err := strconv.Atoi(bookIdStr)
 	if err != nil {
 		return serializer.ErrRes(err)
 	}
 
-	arr, err := getContents(bookId)
+	arr, err := getContents(bookId, c)
 	if err != nil {
 		return serializer.ErrRes(err)
 	}
@@ -183,10 +183,9 @@ func GetContents(bookIdStr string) serializer.Response {
 
 var bookContentsKey = "book:contents:%d"
 
-func getContents(bookId int) (res []model.Contents, err error) {
+func getContents(bookId int, c context.Context) (res []model.Contents, err error) {
 	key := fmt.Sprintf(bookContentsKey, bookId)
-	ctx := context.Background()
-	str, err := cache.Redis().Get(ctx, key).Result()
+	str, err := cache.Redis().Get(c, key).Result()
 	if err == nil {
 		err = json.Unmarshal([]byte(str), &res)
 		return
@@ -200,6 +199,6 @@ func getContents(bookId int) (res []model.Contents, err error) {
 	if err != nil {
 		return
 	}
-	err = cache.Redis().Set(ctx, key, bArr, util.Month).Err()
+	err = cache.Redis().Set(c, key, bArr, util.Month).Err()
 	return
 }

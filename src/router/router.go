@@ -29,6 +29,7 @@ func InitRouter() *gin.Engine {
 	bookGp.POST("/search/book", controller.SearchBookList)
 	bookGp.GET("/get/book/info", controller.GetBookInfo)
 	bookGp.GET("/get/contents", controller.GetContents)
+	bookGp.POST("/search/on_type", controller.SearchOnType)
 
 	// page
 	pageGp := r.Group("/book/page")

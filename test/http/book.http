@@ -18,3 +18,12 @@ GET localhost:8080/book/info/get/book/info?bookId=12
 ### getBookContents
 GET localhost:8080/book/info/get/contents?bookId=12
 
+
+
+### search on type
+POST localhost:19898/book/info/search/on_type
+Content-Type: application/json
+
+{
+  "query": "java"
+}

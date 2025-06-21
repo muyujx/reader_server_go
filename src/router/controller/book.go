@@ -17,6 +17,16 @@ func SearchBookList(c *gin.Context) {
 	}
 }
 
+func SearchOnType(c *gin.Context) {
+	var svc service.SearchBookOnTypeSvc
+
+	if err := c.ShouldBindJSON(&svc); err == nil {
+		c.JSON(http.StatusOK, svc.SearchBookOnType())
+	} else {
+		c.JSON(http.StatusOK, serializer.ErrRes(err))
+	}
+}
+
 func GetBookInfo(c *gin.Context) {
 	bookId := c.Query("bookId")
 	c.JSON(http.StatusOK, service.GetBookInfo(bookId))
@@ -24,5 +34,5 @@ func GetBookInfo(c *gin.Context) {
 
 func GetContents(c *gin.Context) {
 	bookId := c.Query("bookId")
-	c.JSON(http.StatusOK, service.GetContents(bookId))
+	c.JSON(http.StatusOK, service.GetContents(bookId, c))
 }
