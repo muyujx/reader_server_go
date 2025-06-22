@@ -95,7 +95,7 @@ func (r *FavoriteBookRepo) GetFavoriteBookList(userId int, page int, pageSize in
 		Joins(" JOIN book ON book.id = favorite_book.book_id ").
 		Joins(" LEFT JOIN book_tag_rel ON book.id = book_tag_rel.book_id ").
 		Where("user_id = ?", userId).
-		Order("favorite_book.last_read DESC favorite_book.create_time ASC").
+		Order("favorite_book.last_read DESC, favorite_book.create_time ASC").
 		Limit(pageSize).
 		Offset((page - 1) * pageSize).
 		Find(&res).Error
