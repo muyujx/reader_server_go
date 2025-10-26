@@ -37,7 +37,6 @@ func InitRouter() *gin.Engine {
 
 	// user cur page
 	userPageGp := r.Group("/user/page")
-	userPageGp.POST("/update", controller.UpdateUserCurrentPage)
 	userPageGp.GET("/get", controller.GetUserCurrentPage)
 
 	// type
@@ -50,7 +49,14 @@ func InitRouter() *gin.Engine {
 	favoriteGp.POST("/add", controller.AddFavoriteBook)
 	favoriteGp.POST("/delete", controller.DeleteFavoriteBook)
 	favoriteGp.POST("/list", controller.ListFavoriteBook)
-	favoriteGp.POST("/read_cost", controller.AddReadingCost)
+
+	// progress
+	progressGroup := r.Group("/book/progress")
+	progressGroup.POST("/update", controller.UpdateReadingProgress)
+
+	// read_history
+	historyGroup := r.Group("/read/history")
+	historyGroup.POST("/list", controller.ListReadHistory)
 
 	// test
 	testGp := r.Group("/test")

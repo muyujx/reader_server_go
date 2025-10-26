@@ -16,3 +16,9 @@ func TestPassword(t *testing.T) {
 	fmt.Println(len(s))
 
 }
+
+func TestT(t *testing.T) {
+
+	fmt.Println(fmt.Sprintf("aaa %v", "bbb"))
+
+}

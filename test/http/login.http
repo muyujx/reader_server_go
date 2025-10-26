@@ -1,8 +1,9 @@
+@local = http://localhost:19898
 
 
 
 #### 登录
-POST localhost:19898/login
+POST {{local}}/login
 Content-Type: application/json
 
 {
@@ -13,7 +14,7 @@ Content-Type: application/json
 
 
 ### 获取当前登录用户
-GET localhost:8080/test/user
+GET {{local}}/test/user
 
 
 

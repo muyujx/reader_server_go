@@ -66,7 +66,7 @@ func (svc *BookListService) SearchBookList(c *gin.Context) serializer.Response {
 	// 检查用户收藏的书籍
 	fBookMap, err := model.DbOp.FavoriteBookRepo.CheckFavoriteBook(user.ID, bookIdList)
 	if err != nil {
-		logger.Error("[SearchBookList] [CheckFavoriteBook] error:", err)
+		logger.Error("[SearchBookList] [CheckFavoriteBook] error: %v", err)
 		return serializer.UnknownErr
 	}
 

@@ -45,13 +45,13 @@ func SetSession(user *model.User, c *gin.Context, clientType int) (sessionId str
 	})
 
 	if err != nil {
-		logger.Error("[SetSession] json parse error user = %s, err = %s", user, err)
+		logger.Error("[SetSession] json parse error user = %v, err = %v", user, err)
 		return
 	}
 
 	err = maintainSessionList(c, user, sessionId, clientType)
 	if err != nil {
-		logger.Error("[SetSession] maintainSessionList user = %+v, err = %s", user, err)
+		logger.Error("[SetSession] maintainSessionList user = %+v, err = %v", user, err)
 		return
 	}
 
@@ -109,7 +109,7 @@ func RefreshSession(c context.Context, userCtx *ctx.UserCtx) error {
 	err = cache.Redis().Expire(c, sessionListKey, SessionListTime).Err()
 
 	if err != nil {
-		logger.Error("[RefreshSession] redis expire sessionMap error, userCtx = %s, err = %s", userCtx, err)
+		logger.Error("[RefreshSession] redis expire sessionMap error, userCtx = %v, err = %v", userCtx, err)
 		return err
 	}
 	return nil
