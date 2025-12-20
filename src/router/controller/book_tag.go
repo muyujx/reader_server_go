@@ -9,7 +9,7 @@ import (
 
 // GetAllTag 获取所有书籍标签
 func GetAllTag(c *gin.Context) {
-	c.JSON(http.StatusOK, service.GetAllTag(c))
+	c.JSON(http.StatusOK, service.GetAllTag())
 }
 
 // ChangeTag 修改书籍标签
