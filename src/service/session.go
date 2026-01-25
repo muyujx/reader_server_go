@@ -14,14 +14,14 @@ import (
 )
 
 const (
-	SessionTime   = util.Month
+	SessionTime   = util.Year
 	SessionPrefix = "session:"
 
 	SessionListTime      = SessionTime + time.Hour
 	sessionListKeyFormat = "sessionList:%d:%d"
 
 	// SessionMaxCount 每个账号每个客户端保留的最大 session 数量
-	SessionMaxCount = 3
+	SessionMaxCount = 100
 )
 
 func ParseSessionListKey(userId int, clientType int) string {

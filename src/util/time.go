@@ -5,6 +5,7 @@ import "time"
 const (
 	Day   = 24 * time.Hour
 	Month = 30 * Day
+	Year  = 365 * Day
 )
 
 const (
