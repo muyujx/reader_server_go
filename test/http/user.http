@@ -6,7 +6,7 @@ POST localhost:8080/register
 Content-Type: application/json
 
 {
-  "account": "test1111",
-  "password": "test1111"
+  "account": "test_test",
+  "password": "test_test"
 }
 

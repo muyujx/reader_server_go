@@ -16,6 +16,7 @@ func AddFavoriteBook(c *gin.Context) {
 	if err := c.ShouldBindJSON(svc); err == nil {
 		serializer.ReturnJson(c, svc.AddFavoriteBook(c))
 	} else {
+		logger.Error("[AddFavoriteBook] param error %v", err)
 		serializer.ReturnJson(c, serializer.ParamErr)
 	}
 }
@@ -27,6 +28,7 @@ func DeleteFavoriteBook(c *gin.Context) {
 	if err := c.ShouldBindJSON(svc); err == nil {
 		serializer.ReturnJson(c, svc.DeleteFavoriteBook(c))
 	} else {
+		logger.Error("[DeleteFavoriteBook] param error %v", err)
 		serializer.ReturnJson(c, serializer.ParamErr)
 	}
 }
@@ -37,18 +39,8 @@ func ListFavoriteBook(c *gin.Context) {
 	if err := c.ShouldBindJSON(svc); err == nil {
 		serializer.ReturnJson(c, svc.GetFavoriteBookList(c))
 	} else {
+		logger.Error("[ListFavoriteBook] param error %v", err)
 		serializer.ReturnJson(c, serializer.ParamErr)
-	}
-}
-
-// UpdateUserCurrentPage 修改当前阅读进度
-func UpdateUserCurrentPage(c *gin.Context) {
-	var svc service.UpdateUsrCurPageSvc
-
-	if err := c.ShouldBindJSON(&svc); err == nil {
-		c.JSON(http.StatusOK, svc.UpdateUsrCurPage(c))
-	} else {
-		c.JSON(http.StatusOK, serializer.ErrRes(err))
 	}
 }
 
@@ -62,16 +54,4 @@ func GetUserCurrentPage(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, service.GetUserCurPage(c, bookId))
-}
-
-// AddReadingCost 增加阅读耗时
-func AddReadingCost(c *gin.Context) {
-	svc := &service.AddReadingTimeSvc{}
-	if err := c.ShouldBindJSON(svc); err == nil {
-		serializer.ReturnJson(c, svc.AddReadingTime(c))
-		return
-	} else {
-		logger.Error("param error", err)
-		serializer.ParamErrMsg(err.Error())
-	}
 }

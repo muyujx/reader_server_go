@@ -21,7 +21,7 @@ func (svc *AddFavoriteBookSvc) AddFavoriteBook(c *gin.Context) serializer.Respon
 
 	exists, err := model.DbOp.BookRepo.CheckBooId(bookId)
 	if err != nil {
-		logger.Error("[AddFavoriteBook] CheckBooId  err:", err)
+		logger.Error("[AddFavoriteBook] CheckBooId  err: %v", err)
 		return serializer.UnknownErr
 	}
 	if !exists {
@@ -40,7 +40,7 @@ func (svc *AddFavoriteBookSvc) AddFavoriteBook(c *gin.Context) serializer.Respon
 		if util.IsDuplicateKeyError(err) {
 			return serializer.ParamErrMsg("book already exists")
 		}
-		logger.Error("[AddFavoriteBook] AddFavoriteBook err:", err)
+		logger.Error("[AddFavoriteBook] AddFavoriteBook err: %v", err)
 		return serializer.UnknownErr
 	}
 	return serializer.SuccessNoRes()
@@ -56,7 +56,7 @@ func (svc *DeleteFavoriteBookSvc) DeleteFavoriteBook(c *gin.Context) serializer.
 	bookId := svc.BookId
 	err := model.DbOp.FavoriteBookRepo.DelFavoriteBook(user.ID, bookId)
 	if err != nil {
-		logger.Error("[DeleteFavoriteBook] DeleteFavoriteBook err:", err)
+		logger.Error("[DeleteFavoriteBook] DeleteFavoriteBook err: %v", err)
 		return serializer.UnknownErr
 	}
 	return serializer.Success
@@ -65,23 +65,6 @@ func (svc *DeleteFavoriteBookSvc) DeleteFavoriteBook(c *gin.Context) serializer.
 type UpdateUsrCurPageSvc struct {
 	BookId int `json:"bookId"`
 	Page   int `json:"page"`
-}
-
-// UpdateUsrCurPage 更新已收藏书籍的阅读进度
-func (svc *UpdateUsrCurPageSvc) UpdateUsrCurPage(c *gin.Context) serializer.Response {
-	user := ctx.GetUser(c)
-	bookId := svc.BookId
-	page := svc.Page
-
-	if page < 1 {
-		return serializer.ParamErrMsg("page must greater than 0")
-	}
-	curTime := time.Now().UnixMilli()
-	err := model.DbOp.FavoriteBookRepo.UpdateUserCurPage(user.ID, bookId, page, curTime)
-	if err != nil {
-		return serializer.ErrRes(err)
-	}
-	return serializer.SuccessNoRes()
 }
 
 // GetUserCurPage 获取收藏书籍的阅读进度
@@ -124,7 +107,7 @@ func (svc *FavoriteListSvc) GetFavoriteBookList(c *gin.Context) serializer.Respo
 
 	total, err := model.DbOp.FavoriteBookRepo.CountBook(userId)
 	if err != nil {
-		logger.Error("[GetFavoriteBookList] CountBook err:", err)
+		logger.Error("[GetFavoriteBookList] CountBook err: %v", err)
 		return serializer.UnknownErr
 	}
 
@@ -139,31 +122,9 @@ func (svc *FavoriteListSvc) GetFavoriteBookList(c *gin.Context) serializer.Respo
 
 	content, err := model.DbOp.FavoriteBookRepo.GetFavoriteBookList(userId, page, pageSize)
 	if err != nil {
-		logger.Error("[GetFavoriteBookList] GetFavoriteBookList err:", err)
+		logger.Error("[GetFavoriteBookList] GetFavoriteBookList err: %v", err)
 		return serializer.UnknownErr
 	}
 	res.Content = content
 	return serializer.SuccessRes(res)
-}
-
-type AddReadingTimeSvc struct {
-	BookId      int `json:"bookId"`
-	ReadingCost int `json:"readingCost"`
-}
-
-// AddReadingTime 增加书籍阅读时间
-func (svc *AddReadingTimeSvc) AddReadingTime(c *gin.Context) serializer.Response {
-	user := ctx.GetUser(c)
-	bookId := svc.BookId
-	readingCost := svc.ReadingCost
-
-	if readingCost <= 0 {
-		return serializer.ParamErrMsg("readingCost must greater than 0")
-	}
-	err := model.DbOp.FavoriteBookRepo.AddBookReadingTime(user.ID, bookId, readingCost)
-	if err != nil {
-		logger.Error("[AddReadingTime] AddBookReadingTime err:", err)
-		return serializer.UnknownErr
-	}
-	return serializer.Success
 }

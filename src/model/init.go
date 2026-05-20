@@ -11,7 +11,9 @@ import (
 	"time"
 )
 
-type DbRepo struct {
+type dbRepo struct {
+	DB *gorm.DB
+
 	UserRepo *UserRepo
 
 	PageRepo *PageRepo
@@ -23,9 +25,11 @@ type DbRepo struct {
 	BookTagRepo *BookTagRepo
 
 	FavoriteBookRepo *FavoriteBookRepo
+
+	ReadHistoryRepo *ReadHistoryRepo
 }
 
-var DbOp *DbRepo
+var DbOp *dbRepo
 
 func InitDb() {
 	mysqlConfig := config.Config.Mysql
@@ -53,13 +57,15 @@ func InitDb() {
 		gormDB = gormDB.Debug()
 	}
 
-	DbOp = &DbRepo{
+	DbOp = &dbRepo{
+		DB:               gormDB,
 		UserRepo:         NewUseRepo(gormDB),
 		PageRepo:         NewPageRepo(gormDB),
 		BookRepo:         NewBookRepo(gormDB),
 		ContentsRepo:     NewContentsRepo(gormDB),
 		BookTagRepo:      NewBookTagRepo(gormDB),
 		FavoriteBookRepo: NewFavoriteBookRepo(gormDB),
+		ReadHistoryRepo:  NewReadHistoryRepo(gormDB),
 	}
 
 }

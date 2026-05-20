@@ -2,7 +2,6 @@ package model
 
 import (
 	"gorm.io/gorm"
-	"time"
 )
 
 type FavoriteBookRepo struct {
@@ -48,15 +47,6 @@ func (r *FavoriteBookRepo) GetFavoriteBook(userId int, bookId int) (FavoriteBook
 
 func (r *FavoriteBookRepo) DelFavoriteBook(userId int, bookId int) error {
 	return r.db.Where("user_id = ? AND book_id = ?", userId, bookId).Delete(&FavoriteBook{}).Error
-}
-
-func (r *FavoriteBookRepo) UpdateUserCurPage(userId int, bookId int, page int, lastRead int64) error {
-	return r.db.Model(&FavoriteBook{}).
-		Where("user_id = ? AND book_id = ?", userId, bookId).
-		UpdateColumns(map[string]any{
-			"page":      page,
-			"last_read": lastRead,
-		}).Error
 }
 
 // CountBook 用户收藏书籍总数
@@ -121,12 +111,20 @@ func (r *FavoriteBookRepo) CheckFavoriteBook(userId int, bookIds []int) (map[int
 	return resMap, nil
 }
 
-// AddBookReadingTime 增加书籍阅读时间
-func (r *FavoriteBookRepo) AddBookReadingTime(userId int, bookId int, readingTime int) error {
+// UpdateUserReadingProgress 增加书籍阅读时间
+func (r *FavoriteBookRepo) UpdateUserReadingProgress(
+	userId int,
+	bookId int,
+	readingTime int,
+	page int,
+	curTime int64,
+) error {
 	return r.db.Model(&FavoriteBook{}).
 		Where("book_id = ? AND user_id = ?", bookId, userId).
 		UpdateColumns(map[string]any{
 			"reading_cost": gorm.Expr("reading_cost + ?", readingTime),
-			"update_time":  time.Now().Unix(),
+			"update_time":  curTime,
+			"page":         page,
+			"last_read":    curTime,
 		}).Error
 }

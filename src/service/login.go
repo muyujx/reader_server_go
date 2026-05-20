@@ -72,7 +72,7 @@ func (svc *LoginService) Login(c *gin.Context) serializer.Response {
 	}
 
 	// 设置 cookie
-	c.SetCookie("sessionId", sessionId, int(3*util.Month/time.Second), "/", "", false, true)
+	c.SetCookie("sessionId", sessionId, int(util.Year/time.Second), "/", "", false, true)
 
 	// 修改用户上次登录时间
 	util.GoSafe(func() {
