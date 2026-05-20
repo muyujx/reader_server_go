@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"muyu.com/reader_server_go/v1/src/cache"
 	"muyu.com/reader_server_go/v1/src/ctx"
@@ -11,7 +13,6 @@ import (
 	"muyu.com/reader_server_go/v1/src/model"
 	"muyu.com/reader_server_go/v1/src/serializer"
 	"muyu.com/reader_server_go/v1/src/util"
-	"strconv"
 )
 
 type BookListService struct {
@@ -35,6 +36,7 @@ type BookInfoRes struct {
 	BigCoverPic string `json:"bigCoverPic"`
 	TagId       int    `json:"tagId"`
 	Favorite    bool   `json:"favorite"`
+	Description string `json:"description"`
 }
 
 func (svc *BookListService) SearchBookList(c *gin.Context) serializer.Response {
@@ -82,6 +84,7 @@ func (svc *BookListService) SearchBookList(c *gin.Context) serializer.Response {
 			BigCoverPic: book.BigCoverPic,
 			TagId:       book.TagId,
 			Favorite:    favorite,
+			Description: book.Description,
 		}
 	}
 

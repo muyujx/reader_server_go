@@ -2,6 +2,7 @@ package model
 
 import (
 	"errors"
+
 	"gorm.io/gorm"
 )
 
@@ -74,7 +75,7 @@ func (c *BookRepo) SearchBook(search string, tag int, limit int, offset int) ([]
 func (c *BookRepo) buildSearchQuery(search string, tag int) *gorm.DB {
 
 	query := c.db.Table("book").
-		Select(" book.id AS id, book_name, total_page, cover_pic, big_cover_pic, COALESCE(tag_id, -1) AS tag_id ").
+		Select(" book.id AS id, book_name, description,  total_page, cover_pic, big_cover_pic, COALESCE(tag_id, -1) AS tag_id ").
 		Joins(" LEFT JOIN book_tag_rel ON book.id = book_tag_rel.book_id ")
 
 	if tag != -1 {
